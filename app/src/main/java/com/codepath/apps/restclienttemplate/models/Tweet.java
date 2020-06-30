@@ -34,6 +34,7 @@ public class Tweet {
             tweet.user = User.fromJson(jsonObject.getJSONObject("user"));
             tweet.formattedRelativeTime = TimeFormatter.getTimeDifference(tweet.createdAt);
             JSONObject entitiesObject = jsonObject.getJSONObject("entities");
+            Log.i("details", jsonObject.toString());
             if(entitiesObject.has("media")){
                 tweet.mediaUrlHttps = entitiesObject.getJSONArray("media").getJSONObject(0).getString("media_url_https");
             }
