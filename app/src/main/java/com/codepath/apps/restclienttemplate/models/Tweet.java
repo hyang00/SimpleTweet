@@ -1,6 +1,7 @@
 package com.codepath.apps.restclienttemplate.models;
 
 import android.text.format.DateUtils;
+import android.util.Log;
 
 import com.codepath.apps.restclienttemplate.TimeFormatter;
 import com.facebook.stetho.common.ArrayListAccumulator;
@@ -22,6 +23,7 @@ public class Tweet {
         public String createdAt;
         public User user;
         public String formattedRelativeTime;
+        public String mediaUrlHttps;
 
         public Tweet(){}
 
@@ -31,6 +33,26 @@ public class Tweet {
             tweet.createdAt = jsonObject.getString("created_at");
             tweet.user = User.fromJson(jsonObject.getJSONObject("user"));
             tweet.formattedRelativeTime = TimeFormatter.getTimeDifference(tweet.createdAt);
+            JSONObject entitiesObject = jsonObject.getJSONObject("entities");
+            if(entitiesObject.has("media")){
+                tweet.mediaUrlHttps = entitiesObject.getJSONArray("media").getJSONObject(0).getString("media_url_https");
+            }
+            /*Log.i("tweet", "entities: " + entitiesObject.toString());
+            JSONArray mediaArray = entitiesObject.optJSONArray("media");
+            JSONObject mediaObj = null;
+            if(mediaArray!=null){
+                mediaObj = mediaArray.optJSONObject(0);
+                Log.i("media", "media: " + mediaArray.toString());
+            }
+            if(mediaObj !=null){
+                tweet.mediaUrlHttps = mediaObj.optString("media_url_https");
+            }
+            if(tweet.mediaUrlHttps!=null){
+                Log.i("mediaurl", "mediaUrlHttps " + tweet.mediaUrlHttps);
+            }*/
+
+            //tweet.mediaUrlHttps = jsonObject.getJSONObject("entities").optJSONArray("media").optJSONObject(0).getString("media_url_https");
+            Log.i("tweet", "tweet body:" + tweet.body + " mediaUrl: " + tweet.mediaUrlHttps);
             return tweet;
         }
 
@@ -42,7 +64,26 @@ public class Tweet {
             return tweets;
         }
 
-        /*public String getRelativeTimeAgo(String rawJsonDate) {
+        public String getBody() {
+            return body;
+        }
+
+        public String getCreatedAt() {
+            return createdAt;
+        }
+
+        public User getUser() {
+            return user;
+        }
+
+        public String getFormattedRelativeTime() {
+            return formattedRelativeTime;
+        }
+
+        public String getMediaUrlHttps() {
+            return mediaUrlHttps;
+        }
+/*public String getRelativeTimeAgo(String rawJsonDate) {
             String twitterFormat = "EEE MMM dd HH:mm:ss ZZZZZ yyyy";
             SimpleDateFormat sf = new SimpleDateFormat(twitterFormat, Locale.ENGLISH);
             sf.setLenient(true);
