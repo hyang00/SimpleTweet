@@ -24,6 +24,7 @@ public class Tweet {
         public User user;
         public String formattedRelativeTime;
         public String mediaUrlHttps;
+        public String formattedAbsoluteTime;
 
         public Tweet(){}
 
@@ -33,6 +34,7 @@ public class Tweet {
             tweet.createdAt = jsonObject.getString("created_at");
             tweet.user = User.fromJson(jsonObject.getJSONObject("user"));
             tweet.formattedRelativeTime = TimeFormatter.getTimeDifference(tweet.createdAt);
+            tweet.formattedAbsoluteTime = TimeFormatter.getTimeStamp(tweet.createdAt);
             JSONObject entitiesObject = jsonObject.getJSONObject("entities");
             Log.i("details", jsonObject.toString());
             if(entitiesObject.has("media")){
@@ -63,6 +65,10 @@ public class Tweet {
                 tweets.add(fromJson(jsonArray.getJSONObject(i)));
             }
             return tweets;
+        }
+
+        public String getFormattedAbsoluteTime() {
+            return formattedAbsoluteTime;
         }
 
         public String getBody() {
