@@ -41,14 +41,17 @@ public class Tweet {
             tweet.retweetCount = jsonObject.getInt("retweet_count");
             tweet.likeCount = jsonObject.getInt("favorite_count");
             tweet.id = jsonObject.getLong("id");
-            JSONObject entitiesObject = jsonObject.getJSONObject("entities");
-            Log.i("details", jsonObject.toString());
-            if(entitiesObject.has("media")){
-                tweet.mediaUrlHttps = entitiesObject.getJSONArray("media").getJSONObject(0).getString("media_url_https");
+            //JSONObject entitiesObject = jsonObject.getJSONObject("entities");
+            //Log.i("details", jsonObject.toString());
+            tweet.mediaUrlHttps = null;
+            if(jsonObject.getJSONObject("entities").has("media")&& jsonObject.getJSONObject("entities").getJSONArray("media").getJSONObject(0).has("media_url_https")){
+                tweet.mediaUrlHttps = jsonObject.getJSONObject("entities").getJSONArray("media").getJSONObject(0).getString("media_url_https");
+                Log.i("tweet", " hi" + jsonObject.getJSONObject("entities").getJSONArray("media").getJSONObject(0).getString("media_url_https"));
+                Log.i("tweet", "tweet body:" + tweet.body + " mediaUrl: " + tweet.mediaUrlHttps);
             }
 
             //tweet.mediaUrlHttps = jsonObject.getJSONObject("entities").optJSONArray("media").optJSONObject(0).getString("media_url_https");
-            Log.i("tweet", "tweet body:" + tweet.body + " mediaUrl: " + tweet.mediaUrlHttps);
+            //Log.i("tweet", "tweet body:" + tweet.body + " mediaUrl: " + tweet.mediaUrlHttps);
             return tweet;
         }
 

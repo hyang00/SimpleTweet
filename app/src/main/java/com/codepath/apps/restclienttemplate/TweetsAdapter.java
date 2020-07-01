@@ -15,11 +15,15 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.CircleCrop;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.codepath.apps.restclienttemplate.models.Tweet;
 
 import org.parceler.Parcels;
 
 import java.util.List;
+
+import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
 
 public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder> {
 
@@ -107,16 +111,16 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
             tvTimeStamp.setText("| " + tweet.formattedRelativeTime);
             tvRetweetCount.setText(Integer.toString(tweet.getRetweetCount()));
             tvLikeCount.setText(Integer.toString(tweet.getLikeCount()));
-            Glide.with(context).load(tweet.user.profileImageUrl).into(ivProfileImage);
+            Glide.with(context).load(tweet.user.profileImageUrl).transform(new CircleCrop()).into(ivProfileImage);
             if(tweet.getMediaUrlHttps()!=null){
-                Glide.with(context).load(tweet.mediaUrlHttps).into(ivMedia);
+                Glide.with(context).load(tweet.mediaUrlHttps).transform(new RoundedCornersTransformation(30, 10)).into(ivMedia);
                 ivMedia.setVisibility(View.VISIBLE);
             } else {
                 ivMedia.setVisibility(View.GONE);
             }
             //Glide.with(context).load(R.drawable.)
-            ivRetweet.setImageResource(R.drawable.ic_vector_retweet_stroke);
-            ivLike.setImageResource(R.drawable.ic_vector_heart_stroke);
+            ivRetweet.setImageResource(R.drawable.ic_retweet_twitter);
+            ivLike.setImageResource(R.drawable.ic_favorite_twitter);
             //Glide.with(context).load(R.drawable.ic_vector_retweet_stroke).into(ivRetweet);
             //Glide.with(context).load(R.drawable.ic_vector_heart_stroke).into(ivLike);
         }

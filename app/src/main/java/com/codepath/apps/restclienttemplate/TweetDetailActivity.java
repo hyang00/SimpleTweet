@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.codepath.apps.restclienttemplate.models.Tweet;
 
 import org.parceler.Parcels;
@@ -44,8 +45,8 @@ public class TweetDetailActivity extends AppCompatActivity /*implements ImageVie
         tvScreenName.setText("@" + tweet.user.screenName);
         tvBody.setText( tweet.getBody());
         tvName.setText(tweet.user.name);
-        tvTimeStamp.setText("| " + tweet.getFormattedAbsoluteTime());
-        Glide.with(this).load(tweet.user.profileImageUrl).into(ivProfileImage);
+        tvTimeStamp.setText( tweet.getFormattedAbsoluteTime());
+        Glide.with(this).load(tweet.user.profileImageUrl).transform(new CircleCrop()).into(ivProfileImage);
         if(tweet.getMediaUrlHttps()!=null){
             Glide.with(this).load(tweet.mediaUrlHttps).into(ivMedia);
         }
