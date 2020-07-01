@@ -27,6 +27,7 @@
         android:layout_marginTop="0dp"
         android:includeFontPadding="true"
         android:padding="4dp"
+        android:textColor="@color/medium_gray"
         tools:text="hyang00" />
 
     <TextView
@@ -39,6 +40,8 @@
         android:autoLink="all"
         android:clickable="false"
         android:padding="4dp"
+        android:textColor="@color/black"
+        android:textSize="24sp"
         tools:text="This is my tweet!" />
 
     <TextView
@@ -50,6 +53,8 @@
         android:layout_marginTop="0dp"
         android:layout_toEndOf="@+id/ivProfileImage"
         android:padding="4dp"
+        android:textColor="@color/black"
+        android:textStyle="bold"
         tools:text="Hannah Yang" />
 
     <TextView
@@ -61,6 +66,7 @@
         android:layout_marginStart="0dp"
         android:layout_marginTop="0dp"
         android:padding="4dp"
+        android:textColor="@color/medium_gray"
         tools:text="2:23 PM 30 Jun 20 " />
 
     <ImageView
