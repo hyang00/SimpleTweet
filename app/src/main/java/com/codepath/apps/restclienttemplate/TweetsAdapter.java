@@ -110,10 +110,15 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
             Glide.with(context).load(tweet.user.profileImageUrl).into(ivProfileImage);
             if(tweet.getMediaUrlHttps()!=null){
                 Glide.with(context).load(tweet.mediaUrlHttps).into(ivMedia);
+                ivMedia.setVisibility(View.VISIBLE);
+            } else {
+                ivMedia.setVisibility(View.GONE);
             }
             //Glide.with(context).load(R.drawable.)
-            Glide.with(context).load(R.drawable.ic_vector_retweet_stroke).into(ivRetweet);
-            Glide.with(context).load(R.drawable.ic_vector_heart_stroke).into(ivLike);
+            ivRetweet.setImageResource(R.drawable.ic_vector_retweet_stroke);
+            ivLike.setImageResource(R.drawable.ic_vector_heart_stroke);
+            //Glide.with(context).load(R.drawable.ic_vector_retweet_stroke).into(ivRetweet);
+            //Glide.with(context).load(R.drawable.ic_vector_heart_stroke).into(ivLike);
         }
         @Override
         public void onClick(View view) {
