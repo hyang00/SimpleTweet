@@ -35,8 +35,9 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/ivProfileImage"
         android:layout_alignParentStart="true"
-        android:layout_marginTop="4dp"
+        android:layout_marginTop="0dp"
         android:autoLink="all"
+        android:clickable="false"
         android:padding="4dp"
         tools:text="This is my tweet!" />
 
@@ -72,6 +73,7 @@
         android:layout_marginStart="0dp"
         android:layout_marginTop="0dp"
         android:layout_marginEnd="0dp"
+        android:padding="4dp"
         tools:srcCompat="@tools:sample/avatars" />
 
 </RelativeLayout>
