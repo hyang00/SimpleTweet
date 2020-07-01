@@ -94,7 +94,9 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
             tvName.setText(tweet.user.name);
             tvTimeStamp.setText("| " + tweet.formattedRelativeTime);
             Glide.with(context).load(tweet.user.profileImageUrl).into(ivProfileImage);
-            Glide.with(context).load(tweet.mediaUrlHttps).into(ivMedia);
+            if(tweet.getMediaUrlHttps()!=null){
+                Glide.with(context).load(tweet.mediaUrlHttps).into(ivMedia);
+            }
         }
         @Override
         public void onClick(View view) {
