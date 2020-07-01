@@ -76,6 +76,12 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
         TextView tvName;
         TextView tvTimeStamp;
         ImageView ivMedia;
+        ImageView ivReply;
+        ImageView ivRetweet;
+        ImageView ivLike;
+        TextView tvReply;
+        TextView tvRetweetCount;
+        TextView tvLikeCount;
         // passing in one "tweet"
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -85,25 +91,35 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
             tvName = itemView.findViewById(R.id.tvName);
             tvTimeStamp = itemView.findViewById(R.id.tvTimeStamp);
             ivMedia = itemView.findViewById(R.id.ivMedia);
+            ivReply = itemView.findViewById(R.id.ivReply);
+            ivRetweet = itemView.findViewById(R.id.ivRetweet);
+            ivLike = itemView.findViewById(R.id.ivLike);
+            tvReply = itemView.findViewById(R.id.tvReplyCount);
+            tvRetweetCount = itemView.findViewById(R.id.tvRetweetCount);
+            tvLikeCount = itemView.findViewById(R.id.tvLikeCount);
             itemView.setOnClickListener(this);
         }
 
         public void bind(Tweet tweet) {
             tvScreenName.setText("@" + tweet.user.screenName);
-            tvBody.setText( tweet.body);
+            tvBody.setText( tweet.getBody());
             tvName.setText(tweet.user.name);
             tvTimeStamp.setText("| " + tweet.formattedRelativeTime);
+            tvRetweetCount.setText(Integer.toString(tweet.getRetweetCount()));
+            tvLikeCount.setText(Integer.toString(tweet.getLikeCount()));
             Glide.with(context).load(tweet.user.profileImageUrl).into(ivProfileImage);
             if(tweet.getMediaUrlHttps()!=null){
                 Glide.with(context).load(tweet.mediaUrlHttps).into(ivMedia);
             }
+            //Glide.with(context).load(R.drawable.)
+            Glide.with(context).load(R.drawable.ic_vector_retweet_stroke).into(ivRetweet);
+            Glide.with(context).load(R.drawable.ic_vector_heart_stroke).into(ivLike);
         }
         @Override
         public void onClick(View view) {
-
             // gets item position
             int position = getAdapterPosition();
-            Log.i("myApp", "on click");
+            //Log.i("myApp", "on click");
             // make sure the position is valid, i.e. actually exists in the view
             if (position != RecyclerView.NO_POSITION) {
                 // get the movie at the position, this won't work if the class is static

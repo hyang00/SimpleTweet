@@ -36,6 +36,7 @@ public class TimelineActivity extends AppCompatActivity {
     public static final String TAG = "TimelineActivity";
     private final int REQUEST_CODE = 20;
     private SwipeRefreshLayout swipeContainer;
+    EndlessRecyclerViewScrollListener scrollListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +44,7 @@ public class TimelineActivity extends AppCompatActivity {
         setContentView(R.layout.activity_timeline);
 
         client = TwitterApplication.getRestClient(this);
+
 
         //Find the recycler view
         rvTweets = findViewById(R.id.rvTweets);
@@ -69,11 +71,42 @@ public class TimelineActivity extends AppCompatActivity {
                 android.R.color.holo_orange_light,
                 android.R.color.holo_red_light);
 
-
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         // Recycler view setup: layout manager and the adapter
-        rvTweets.setLayoutManager(new LinearLayoutManager(this));
+        rvTweets.setLayoutManager(linearLayoutManager);
         rvTweets.setAdapter(adapter);
+
+        scrollListener = new EndlessRecyclerViewScrollListener(linearLayoutManager) {
+            @Override
+            public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+                Log.i(TAG, "onloadmore");
+                loadMoreData();
+            }
+        };
+        rvTweets.addOnScrollListener(scrollListener);
+
         populateHomeTimeLine();
+    }
+
+    private void loadMoreData() {
+        client.getNextPageOfTweets(new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Headers headers, JSON json) {
+                Log.i(TAG, "onSuccess for load more data" + json.toString());
+                JSONArray jsonArray = json.jsonArray;
+                try {
+                    List<Tweet> tweets = Tweet.fromJsonArray(jsonArray);
+                    adapter.addAll(tweets);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {
+                Log.e(TAG, "onFailure for loadMoreData", throwable);
+            }
+        }, tweets.get(tweets.size()-1).id);
     }
 
     private void fetchTimelineAsync(int i) {
@@ -141,7 +174,7 @@ public class TimelineActivity extends AppCompatActivity {
         client.getHomeTimeline(new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Headers headers, JSON json) {
-                Log.i(TAG, "onSuccess " + json.toString());
+                //Log.i(TAG, "onSuccess " + json.toString());
                 JSONArray jsonArray = json.jsonArray;
                 try {
                     tweets.addAll(Tweet.fromJsonArray(jsonArray));

@@ -11,8 +11,9 @@ import com.bumptech.glide.Glide;
 import com.codepath.apps.restclienttemplate.models.Tweet;
 
 import org.parceler.Parcels;
+import org.w3c.dom.Text;
 
-public class TweetDetailActivity extends AppCompatActivity {
+public class TweetDetailActivity extends AppCompatActivity /*implements ImageView.OnClickListener*/ {
 
     Tweet tweet;
 
@@ -22,6 +23,7 @@ public class TweetDetailActivity extends AppCompatActivity {
     TextView tvName;
     TextView tvTimeStamp;
     ImageView ivMedia;
+
 
 
     @Override
@@ -38,11 +40,20 @@ public class TweetDetailActivity extends AppCompatActivity {
         tvTimeStamp = (TextView) findViewById(R.id.tvTimeStamp);
         ivMedia = (ImageView) findViewById(R.id.ivMedia);
 
+
         tvScreenName.setText("@" + tweet.user.screenName);
         tvBody.setText( tweet.getBody());
         tvName.setText(tweet.user.name);
         tvTimeStamp.setText("| " + tweet.getFormattedAbsoluteTime());
         Glide.with(this).load(tweet.user.profileImageUrl).into(ivProfileImage);
-        Glide.with(this).load(tweet.mediaUrlHttps).into(ivMedia);
+        if(tweet.getMediaUrlHttps()!=null){
+            Glide.with(this).load(tweet.mediaUrlHttps).into(ivMedia);
+        }
+
     }
+
+    /*@Override
+    public void onClick(View v) {
+
+    }*/
 }
