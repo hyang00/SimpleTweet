@@ -134,16 +134,18 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
             ivLike.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(context, "" + tweetId, Toast.LENGTH_SHORT).show();
-                    client.likeTweet(tweet.isFavorited(), tweetId, new JsonHttpResponseHandler() {
+                    Toast.makeText(context, "" + tweet.isFavorited(), Toast.LENGTH_SHORT).show();
+                    Log.i("mytweet", "" + tweet.isFavorited());
+                    client.likeTweet(ivLike.isSelected(), tweetId, new JsonHttpResponseHandler() {
                         @Override
                         public void onSuccess(int statusCode, Headers headers, JSON json) {
                             Log.i("mytweet", "onSuccess to like tweet");
                             try {
-                                Tweet tweet = Tweet.fromJson(json.jsonObject);
-                                Log.i("mytweet", "tweet favorited" + tweet.isFavorited());
-                                ivLike.setSelected(tweet.isFavorited());
-                                tvLikeCount.setText(Integer.toString(tweet.getLikeCount()));
+                                Tweet myTweet = Tweet.fromJson(json.jsonObject);
+                                Log.i("mytweet", "tweet favorited" + myTweet.isFavorited());
+                                ivLike.setSelected(myTweet.isFavorited());
+                                // how do i fix the sketchy count?
+                                tvLikeCount.setText(Integer.toString(myTweet.getLikeCount()));
                                 //setResult(RESULT_OK, intent);
                             } catch (JSONException e) {
                                 e.printStackTrace();
