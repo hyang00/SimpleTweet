@@ -3,7 +3,6 @@ package com.codepath.apps.restclienttemplate;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -12,7 +11,6 @@ import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.codepath.apps.restclienttemplate.models.Tweet;
 
 import org.parceler.Parcels;
-import org.w3c.dom.Text;
 
 public class TweetDetailActivity extends AppCompatActivity /*implements ImageView.OnClickListener*/ {
 
@@ -35,7 +33,7 @@ public class TweetDetailActivity extends AppCompatActivity /*implements ImageVie
         tweet = (Tweet) Parcels.unwrap(getIntent().getParcelableExtra(Tweet.class.getSimpleName()));
 
         ivProfileImage = (ImageView) findViewById(R.id.ivProfileImage);
-        tvBody = (TextView) findViewById(R.id.tvBody);
+        tvBody = (TextView) findViewById(R.id.tvDescription);
         tvScreenName = (TextView) findViewById(R.id.tvScreenName);
         tvName = (TextView) findViewById(R.id.tvName);
         tvTimeStamp = (TextView) findViewById(R.id.tvTimeStamp);
