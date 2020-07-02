@@ -2,6 +2,7 @@ package com.codepath.apps.restclienttemplate;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -75,6 +76,8 @@ public class TimelineActivity extends AppCompatActivity {
         // Recycler view setup: layout manager and the adapter
         rvTweets.setLayoutManager(linearLayoutManager);
         rvTweets.setAdapter(adapter);
+        DividerItemDecoration itemDecor = new DividerItemDecoration(TimelineActivity.this, DividerItemDecoration.VERTICAL);
+        rvTweets.addItemDecoration(itemDecor);
 
         scrollListener = new EndlessRecyclerViewScrollListener(linearLayoutManager) {
             @Override
@@ -149,6 +152,7 @@ public class TimelineActivity extends AppCompatActivity {
         if(item.getItemId() == R.id.miCompose){
             //Toast.makeText(this, "Compose!", Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(TimelineActivity.this, ComposeActivity.class);
+            //intent.putExtra("isReply", false);
             startActivityForResult(intent, REQUEST_CODE);
             return true;
         }

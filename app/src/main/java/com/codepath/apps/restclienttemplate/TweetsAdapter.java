@@ -133,6 +133,7 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
             //Glide.with(context).load(R.drawable.)
 
             ivRetweet.setImageResource(R.drawable.ic_retweet_twitter);
+            ivRetweet.setSelected(tweet.isRetweeted());
             ivLike.setSelected(tweet.isFavorited());
             ivLike.setImageResource(R.drawable.ic_favorite_twitter);
             final Long tweetId = tweet.getId();
@@ -169,8 +170,37 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
                 public void onClick(View v) {
                     Toast.makeText(context, "Replying!", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(context, ComposeActivity.class);
+                    intent.putExtra("isReply", true);
+                    intent.putExtra("replyScreenName", tweet.getUser().screenName);
                     //context.startActivity(intent);
                     ((Activity) context).startActivityForResult(intent, REQUEST_CODE);
+                }
+            });
+            ivRetweet.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(context, "Retweet!", Toast.LENGTH_SHORT).show();
+                    Log.i("mytweet", "" + ivRetweet.isSelected());
+                    client.retweet(ivRetweet.isSelected(), tweetId, new JsonHttpResponseHandler() {
+                        @Override
+                        public void onSuccess(int statusCode, Headers headers, JSON json) {
+                            //Log.i("mytweet", "onSuccess to like tweet");
+                            try {
+                                Tweet myTweet = Tweet.fromJson(json.jsonObject);
+                                //Log.i("mytweet", "tweet favorited" + myTweet.isFavorited());
+                                ivRetweet.setSelected(myTweet.isRetweeted());
+                                // how do i fix the sketchy count?
+                                tvRetweetCount.setText(Integer.toString(myTweet.getRetweetCount()));
+                                //setResult(RESULT_OK, intent);
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                        @Override
+                        public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {
+                            Log.e("mytweet", "onFailure to retweet", throwable);
+                        }
+                    });
                 }
             });
             //Glide.with(context).load(R.drawable.ic_vector_retweet_stroke).into(ivRetweet);

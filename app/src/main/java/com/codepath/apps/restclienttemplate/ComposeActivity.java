@@ -29,6 +29,8 @@ public class ComposeActivity extends AppCompatActivity {
     EditText etCompose;
     TextView tvCharacterCount;
     Button btnTweet;
+    boolean isReply;
+    String replyScreenName;
 
     TwitterClient client;
     @Override
@@ -36,10 +38,16 @@ public class ComposeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_compose);
         client = TwitterApplication.getRestClient(this);
+        isReply = getIntent().getBooleanExtra("isReply", false);
+        replyScreenName = getIntent().getStringExtra("replyScreenName");
         etCompose = findViewById(R.id.etCompose);
         tvCharacterCount = findViewById(R.id.tvCharacterCount);
         btnTweet = findViewById(R.id.btnTweet);
         tvCharacterCount.setText("" +MAX_TWEET_LENGTH);
+        if(isReply){
+            etCompose.setHint("Replying to");
+            etCompose.setText("@" +replyScreenName);
+        }
 
         // character counter
         etCompose.addTextChangedListener(new TextWatcher() {
