@@ -1,5 +1,6 @@
 package com.codepath.apps.restclienttemplate;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -28,6 +29,8 @@ import java.util.List;
 
 import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
 import okhttp3.Headers;
+
+//import static androidx.core.app.ActivityCompat.startActivityForResult;
 
 public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder> {
 
@@ -92,6 +95,8 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
         TextView tvReply;
         TextView tvRetweetCount;
         TextView tvLikeCount;
+        private final int REQUEST_CODE = 20;
+
         // passing in one "tweet"
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -126,6 +131,7 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
                 ivMedia.setVisibility(View.GONE);
             }
             //Glide.with(context).load(R.drawable.)
+
             ivRetweet.setImageResource(R.drawable.ic_retweet_twitter);
             ivLike.setSelected(tweet.isFavorited());
             ivLike.setImageResource(R.drawable.ic_favorite_twitter);
@@ -158,6 +164,15 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
                     });
                 }
             });
+            ivReply.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(context, "Replying!", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(context, ComposeActivity.class);
+                    //context.startActivity(intent);
+                    ((Activity) context).startActivityForResult(intent, REQUEST_CODE);
+                }
+            });
             //Glide.with(context).load(R.drawable.ic_vector_retweet_stroke).into(ivRetweet);
             //Glide.with(context).load(R.drawable.ic_vector_heart_stroke).into(ivLike);
         }
@@ -181,6 +196,7 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
                 context.startActivity(intent);
             }
         }
+
     }
 
 
