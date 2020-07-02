@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -18,21 +19,26 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.codepath.apps.restclienttemplate.models.Tweet;
+import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
 
+import org.json.JSONException;
 import org.parceler.Parcels;
 
 import java.util.List;
 
 import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
+import okhttp3.Headers;
 
 public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder> {
 
     Context context;
     List<Tweet> tweets;
+    TwitterClient client;
     // Pass in the context and list of tweets
     public  TweetsAdapter(Context context, List<Tweet> tweets){
         this.context = context;
         this.tweets = tweets;
+        this.client = TwitterApplication.getRestClient(context);
     }
     // For each row, inflate the layout
     @NonNull
@@ -102,6 +108,7 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
             tvRetweetCount = itemView.findViewById(R.id.tvRetweetCount);
             tvLikeCount = itemView.findViewById(R.id.tvLikeCount);
             itemView.setOnClickListener(this);
+
         }
 
         public void bind(Tweet tweet) {
@@ -120,7 +127,64 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
             }
             //Glide.with(context).load(R.drawable.)
             ivRetweet.setImageResource(R.drawable.ic_retweet_twitter);
+            ivLike.setSelected(tweet.isFavorited());
             ivLike.setImageResource(R.drawable.ic_favorite_twitter);
+            final Long tweetId = tweet.getId();
+
+            ivLike.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(context, "" + tweetId, Toast.LENGTH_SHORT).show();
+                    if(ivLike.isSelected()){
+                        // Make an API call to Twitter to like the tweet
+                        client.unLikeTweet(tweetId, new JsonHttpResponseHandler() {
+                            @Override
+                            public void onSuccess(int statusCode, Headers headers, JSON json) {
+                                    Log.i("mytweet", "onSuccess to unlike tweet");
+                                try {
+                                    Tweet tweet = Tweet.fromJson(json.jsonObject);
+                                    Log.i("mytweet", "tweet unfavorited" + tweet.isFavorited());
+                                    ivLike.setSelected(tweet.isFavorited());
+                                    tvLikeCount.setText(Integer.toString(tweet.getLikeCount()));
+                                    //setResult(RESULT_OK, intent);
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {
+                                Log.e("mytweet", "onFailure to like tweet", throwable);
+                            }
+                        });
+
+                    }else{
+                        // Make an API call to Twitter to like the tweet
+                        client.likeTweet(tweetId, new JsonHttpResponseHandler() {
+                            @Override
+                            public void onSuccess(int statusCode, Headers headers, JSON json) {
+                                Log.i("mytweet", "onSuccess to like tweet");
+                                try {
+                                    Tweet tweet = Tweet.fromJson(json.jsonObject);
+                                    Log.i("mytweet", "tweet favorited" + tweet.isFavorited());
+                                    ivLike.setSelected(tweet.isFavorited());
+                                    tvLikeCount.setText(Integer.toString(tweet.getLikeCount()));
+                                    //setResult(RESULT_OK, intent);
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {
+                                Log.e("mytweet", "onFailure to like tweet", throwable);
+                            }
+                        });
+
+                    }
+
+                }
+            });
             //Glide.with(context).load(R.drawable.ic_vector_retweet_stroke).into(ivRetweet);
             //Glide.with(context).load(R.drawable.ic_vector_heart_stroke).into(ivLike);
         }

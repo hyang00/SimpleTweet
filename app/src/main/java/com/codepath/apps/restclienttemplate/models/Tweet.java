@@ -27,6 +27,7 @@ public class Tweet {
         public String formattedAbsoluteTime;
         public Integer retweetCount;
         public Integer likeCount;
+        public boolean favorited;
         public long id;
 
         public Tweet(){}
@@ -41,6 +42,7 @@ public class Tweet {
             tweet.retweetCount = jsonObject.getInt("retweet_count");
             tweet.likeCount = jsonObject.getInt("favorite_count");
             tweet.id = jsonObject.getLong("id");
+            tweet.favorited = jsonObject.getBoolean("favorited");
             //JSONObject entitiesObject = jsonObject.getJSONObject("entities");
             //Log.i("details", jsonObject.toString());
             tweet.mediaUrlHttps = null;
@@ -92,5 +94,13 @@ public class Tweet {
         }
         public Integer getLikeCount() {
             return likeCount;
+        }
+
+        public long getId() {
+            return id;
+        }
+
+        public boolean isFavorited() {
+            return favorited;
         }
 }
