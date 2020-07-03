@@ -53,7 +53,7 @@ GIF created with [LiceCap](http://www.cockos.com/licecap/).
 
 ## Notes
 
-Describe any challenges encountered while building the app.
+I had trouble using fragments and understanding what was going on w/ the sqlite database.
 
 ## Open-source libraries used
 
