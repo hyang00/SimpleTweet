@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -139,7 +138,7 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
             ivProfileImage.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(context, "Going to Profile Page", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(context, "Going to Profile Page", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(context, ProfileDetailActivity.class);
                     intent.putExtra(user.getClass().getSimpleName(), Parcels.wrap(user));
                     context.startActivity(intent);
@@ -148,8 +147,8 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
             ivLike.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(context, "" + tweet.isFavorited(), Toast.LENGTH_SHORT).show();
-                    Log.i("mytweet", "" + tweet.isFavorited());
+                    //Toast.makeText(context, "" + tweet.isFavorited(), Toast.LENGTH_SHORT).show();
+                    //Log.i("mytweet", "" + tweet.isFavorited());
                     client.likeTweet(ivLike.isSelected(), tweetId, new JsonHttpResponseHandler() {
                         @Override
                         public void onSuccess(int statusCode, Headers headers, JSON json) {
@@ -175,7 +174,7 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
             ivReply.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(context, "Replying!", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(context, "Replying!", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(context, ComposeActivity.class);
                     intent.putExtra("isReply", true);
                     intent.putExtra("replyScreenName", tweet.getUser().screenName);
@@ -186,7 +185,7 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
             ivRetweet.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(context, "Retweet!", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(context, "Retweet!", Toast.LENGTH_SHORT).show();
                     Log.i("mytweet", "" + ivRetweet.isSelected());
                     client.retweet(ivRetweet.isSelected(), tweetId, new JsonHttpResponseHandler() {
                         @Override
@@ -226,9 +225,6 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
                 Intent intent = new Intent(context, TweetDetailActivity.class);
                 // serialize the movie using parceler, use its short name as a key
                 intent.putExtra(Tweet.class.getSimpleName(), Parcels.wrap(tweet));
-                //reset the activity we are going to
-                //intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                //intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_TASK_ON_HOME);
                 // show the activity
                 context.startActivity(intent);
             }

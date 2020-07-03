@@ -32,6 +32,8 @@ public class User {
     public Long followersCount;
     @ColumnInfo
     public String location;
+    @ColumnInfo
+    public  Long followingCount;
 
 
     public User() {}
@@ -44,6 +46,7 @@ public class User {
         user.description = jsonObject.optString("description");
         user.location = jsonObject.getString("location");
         user.followersCount = jsonObject.getLong("followers_count");
+        user.followingCount = jsonObject.getLong("friends_count");
         user.id = jsonObject.getLong("id");
         return user;
     }
@@ -86,5 +89,13 @@ public class User {
 
     public String getLocation() {
         return location;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public Long getFollowingCount() {
+        return followingCount;
     }
 }

@@ -1,6 +1,7 @@
 package com.codepath.apps.restclienttemplate;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,6 +16,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.codepath.apps.restclienttemplate.databinding.ActivityComposeBinding;
+import com.codepath.apps.restclienttemplate.databinding.ActivityTweetDetailBinding;
 import com.codepath.apps.restclienttemplate.models.Tweet;
 import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
 
@@ -36,13 +39,17 @@ public class ComposeActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_compose);
+        ActivityComposeBinding binding = ActivityComposeBinding.inflate(getLayoutInflater());
+        View view = binding.getRoot();
+        setContentView(view);
+        //setContentView(R.layout.activity_compose);
+        //showEditDialog();
         client = TwitterApplication.getRestClient(this);
         isReply = getIntent().getBooleanExtra("isReply", false);
         replyScreenName = getIntent().getStringExtra("replyScreenName");
-        etCompose = findViewById(R.id.etCompose);
-        tvCharacterCount = findViewById(R.id.tvCharacterCount);
-        btnTweet = findViewById(R.id.btnTweet);
+        etCompose = binding.etCompose;//(R.id.etCompose);
+        tvCharacterCount = binding.tvCharacterCount;//(R.id.tvCharacterCount);
+        btnTweet = binding.btnTweet;
         tvCharacterCount.setText("" +MAX_TWEET_LENGTH);
         if(isReply){
             etCompose.setHint("Replying to");
@@ -77,7 +84,7 @@ public class ComposeActivity extends AppCompatActivity {
                     Toast.makeText(ComposeActivity.this, "Sorry, your tweet is too long", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                Toast.makeText(ComposeActivity.this, tweetContent, Toast.LENGTH_SHORT).show();
+                //Toast.makeText(ComposeActivity.this, tweetContent, Toast.LENGTH_SHORT).show();
 
                 // Make an API call to Twitter to publish the tweet
                 client.publishTweet(tweetContent, new JsonHttpResponseHandler() {
@@ -107,5 +114,11 @@ public class ComposeActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    private void showEditDialog() {
+        FragmentManager fm = getSupportFragmentManager();
+        ComposeDialogFragment composeDialogFragment = ComposeDialogFragment.newInstance("Some Title");
+        composeDialogFragment.show(fm, "fragment_edit_name");
     }
 }

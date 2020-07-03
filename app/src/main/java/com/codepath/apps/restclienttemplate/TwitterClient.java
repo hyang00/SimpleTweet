@@ -54,14 +54,26 @@ public class TwitterClient extends OAuthBaseClient {
 		client.get(apiUrl, params, handler);
 	}
 
-	public void getFollowersList(String screenName, JsonHttpResponseHandler handler) {
-		String apiUrl = getApiUrl("followers/list.json");
+	public void getUsersList(String wanted, String screenName, JsonHttpResponseHandler handler) {
+		String apiUrl = getApiUrl("friends/list.json");
+		if(wanted.compareTo("Followers")==0){
+			 apiUrl = getApiUrl("followers/list.json");
+		}
 		// Can specify query string params directly or through RequestParams.
 		RequestParams params = new RequestParams();
 		params.put("count", 25);
 		params.put("screen_name", screenName);
 		client.get(apiUrl, params, handler);
 	}
+
+//	public void getFollowingList(String screenName, JsonHttpResponseHandler handler) {
+//		String apiUrl = getApiUrl("friends/list.json");
+//		// Can specify query string params directly or through RequestParams.
+//		RequestParams params = new RequestParams();
+//		params.put("count", 25);
+//		params.put("screen_name", screenName);
+//		client.get(apiUrl, params, handler);
+//	}
 
 	public void publishTweet(String tweetContent, JsonHttpResponseHandler handler) {
 		String apiUrl = getApiUrl("statuses/update.json");
